@@ -11,7 +11,8 @@ public class PlayerInput : MonoBehaviour {
     bool touchingBall;
     bool touchingBallFromRight;
     bool touchingBallFromLeft;
-	BallFollower ballFollower;
+    private Vector3 offset;
+    BallFollower ballFollower;
 	public float ballFollowerForceAmount;
 
     void Awake () {
@@ -27,35 +28,44 @@ public class PlayerInput : MonoBehaviour {
 	}
 
 	void Update () {
-		Vector2 directionalInput = new Vector2 (Input.GetAxisRaw ("Horizontal"), Input.GetAxisRaw ("Vertical"));
-        //if (touchingBall)
-        //{
-        //    print("touching ball");
-        //    if (!ball.CanPush)
-        //    {
-        //        print("can't push ball");
-        //        if (touchingBallFromRight)
-        //        {
-        //            directionalInput = new Vector2(Mathf.Max(directionalInput.x, 0), 0);
-        //        }
-        //        else if (touchingBallFromLeft)
-        //        {
-        //            directionalInput = new Vector2(Mathf.Min(directionalInput.x, 0), 0);
-        //        }
-        //    }
-        //}
-		player.SetDirectionalInput (directionalInput);
-
-		if (Input.GetButtonDown("SwitchDirection") && touchingBall) {
-			if (controller.collisions.faceDir == 1) {
+        if (Input.GetButtonDown("SwitchDirection") && touchingBall)
+        {
+            if (controller.collisions.faceDir == 1)
+            {
                 FindObjectOfType<FocusCamera>().AddToOffset(transform.position - ballFollower.rightTeleport.position);
                 transform.position = ballFollower.rightTeleport.position;
-			} else {
+            }
+            else
+            {
                 FindObjectOfType<FocusCamera>().AddToOffset(transform.position - ballFollower.leftTeleport.position);
                 transform.position = ballFollower.leftTeleport.position;
             }
+            touchingBallFromRight = !touchingBallFromRight;
+            touchingBallFromLeft = !touchingBallFromLeft;
+            offset = ball.transform.position - transform.position;
+            ballFollower.forceAmount = ballFollowerForceAmount;
         }
-
+        else
+        {
+            Vector2 directionalInput = new Vector2(Input.GetAxisRaw("Horizontal"), Input.GetAxisRaw("Vertical"));
+            if (touchingBall)
+            {
+                if (touchingBallFromRight && directionalInput.x <= 0)
+                {
+                    print("moving left");
+                    ball.Move(directionalInput);
+                    directionalInput = Vector2.zero;
+                    transform.position = ball.transform.position - offset;
+                }
+                if (touchingBallFromLeft && directionalInput.x >= 0)
+                {
+                    ball.Move(directionalInput);
+                    directionalInput = Vector2.zero;
+                    transform.position = ball.transform.position - offset;
+                }
+            }
+            player.SetDirectionalInput(directionalInput);
+        }
 		CheckRotation();
 	}
 
@@ -67,26 +77,30 @@ public class PlayerInput : MonoBehaviour {
 		}
 	}
 
-	void OnCollisionEnter2D(Collision2D collision) {
-		if (collision.gameObject.CompareTag("Ball")) {
-            Collider2D collider = collision.collider;
-			touchingBall = true;
-            ball = collider.GetComponent<Ball>();
-            Vector3 contactPoint = collision.contacts[0].point;
+    void OnTriggerEnter2D(Collider2D collider)
+    {
+        if (collider.gameObject.CompareTag("Ball"))
+        {
+            touchingBall = true;
+            ball = collider.GetComponent<PushCollider>().GetBall;
             Vector3 center = collider.bounds.center;
-            touchingBallFromRight = contactPoint.x > center.x;
-            touchingBallFromLeft = contactPoint.x < center.x;
-			ballFollower.forceAmount = ballFollowerForceAmount;
-		}
-	}
+            touchingBallFromRight = transform.position.x > center.x;
+            touchingBallFromLeft = transform.position.x < center.x;
+            offset = ball.transform.position - transform.position;
+            ballFollower.forceAmount = ballFollowerForceAmount;
+ 
+        }
+    }
 
-	void OnCollisionExit2D(Collision2D collision) {
-		if (collision.gameObject.CompareTag("Ball")) {
+
+    void OnTriggerExit2D(Collider2D collider) {
+		if (collider.gameObject.CompareTag("Ball")) {
+            print("no ball!");
 			touchingBall = false;
             touchingBallFromRight = false;
             touchingBallFromLeft = false;
             ball = null;
-			ballFollower.forceAmount = 0;
+            ballFollower.forceAmount = 0;
 		}
 	}
 

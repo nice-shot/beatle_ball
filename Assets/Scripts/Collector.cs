@@ -5,9 +5,7 @@ using UnityEngine;
 
 public class Collector : MonoBehaviour
 {
-    [SerializeField] float size = 1;
-
-    
+        
     public void OnCollisionEnter2D(Collision2D collision)
     {
         Collider2D col = collision.collider;
@@ -23,12 +21,12 @@ public class Collector : MonoBehaviour
     private void Collect(Collider2D col)
     {
         Destroy(col.gameObject);
-        size += 0.5f;
-        transform.localScale = new Vector2(size, size);
+        GetComponent<Ball>().Grow(0.5f);
+        
     }
 
-    private bool CanCollect(Collider2D col)
+    public bool CanCollect(Collider2D col)
     {
-        return size >= col.GetComponent<Collectable>().Size;
+        return GetComponent<Ball>().Size >= col.GetComponent<Collectable>().Size;
     }
 }
