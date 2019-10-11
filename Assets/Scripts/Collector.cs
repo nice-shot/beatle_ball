@@ -6,6 +6,7 @@ using UnityEngine;
 public class Collector : MonoBehaviour
 {
     [SerializeField] float size = 1;
+
     
     public void OnCollisionEnter2D(Collision2D collision)
     {
