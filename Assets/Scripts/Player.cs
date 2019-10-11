@@ -4,12 +4,12 @@ using System.Collections;
 [RequireComponent (typeof (Controller2D))]
 public class Player : MonoBehaviour {
 
+	public float moveSpeed = 6;
 	public float maxJumpHeight = 4;
 	public float minJumpHeight = 1;
 	public float timeToJumpApex = .4f;
 	float accelerationTimeAirborne = .2f;
 	float accelerationTimeGrounded = .1f;
-	float moveSpeed = 6;
 
 	public Vector2 wallJumpClimb;
 	public Vector2 wallJumpOff;
@@ -90,7 +90,7 @@ public class Player : MonoBehaviour {
 			velocity.y = minJumpVelocity;
 		}
 	}
-		
+
 
 	void HandleWallSliding() {
 		wallDirX = (controller.collisions.left) ? -1 : 1;
