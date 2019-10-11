@@ -69,29 +69,22 @@ public class PlayerInput : MonoBehaviour {
 		if (collision.gameObject.CompareTag("Ball")) {
             Collider2D collider = collision.collider;
 			touchingBall = true;
-<<<<<<< HEAD
             ball = collider.GetComponent<Ball>();
             Vector3 contactPoint = collision.contacts[0].point;
             Vector3 center = collider.bounds.center;
             touchingBallFromRight = contactPoint.x > center.x;
             touchingBallFromLeft = contactPoint.x < center.x;
-        }
-=======
 			ballFollower.forceAmount = ballFollowerForceAmount;
 		}
->>>>>>> 5a786b3f60097aa52e6287a756e7d350dbd66451
 	}
 
 	void OnCollisionExit2D(Collision2D collision) {
 		if (collision.gameObject.CompareTag("Ball")) {
 			touchingBall = false;
-<<<<<<< HEAD
             touchingBallFromRight = false;
             touchingBallFromLeft = false;
             ball = null;
-=======
 			ballFollower.forceAmount = 0;
->>>>>>> 5a786b3f60097aa52e6287a756e7d350dbd66451
 		}
 	}
 
