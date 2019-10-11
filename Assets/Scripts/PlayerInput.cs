@@ -11,13 +11,19 @@ public class PlayerInput : MonoBehaviour {
     bool touchingBall;
     bool touchingBallFromRight;
     bool touchingBallFromLeft;
-
+	BallFollower ballFollower;
+	public float ballFollowerForceAmount;
 
     void Awake () {
 		touchingBall = false;
 		player = GetComponent<Player>();
 		controller = GetComponent<Controller2D>();
 		spriteRenderer = GetComponentInChildren<SpriteRenderer>();
+	}
+
+	void Start() {
+		ballFollower = FindObjectOfType<BallFollower>();
+		ballFollowerForceAmount = ballFollower.forceAmount;
 	}
 
 	void Update () {
@@ -41,30 +47,51 @@ public class PlayerInput : MonoBehaviour {
 		player.SetDirectionalInput (directionalInput);
 
 		if (Input.GetButtonDown("SwitchDirection") && touchingBall) {
-			print("Switching direction");
+			if (controller.collisions.faceDir == 1) {
+				transform.position = ballFollower.rightTeleport.position;
+			} else {
+				transform.position = ballFollower.leftTeleport.position;
+			}
 		}
 
 		CheckRotation();
+	}
+
+	void StickToGround() {
+		Transform spriteTrans = spriteRenderer.transform;
+		RaycastHit2D hit = Physics2D.Raycast(transform.position, -spriteTrans.up, Mathf.Infinity, controller.collisionMask);
+		if (hit) {
+			transform.position = Vector2.MoveTowards(transform.position, hit.transform.position, 10	);
+		}
 	}
 
 	void OnCollisionEnter2D(Collision2D collision) {
 		if (collision.gameObject.CompareTag("Ball")) {
             Collider2D collider = collision.collider;
 			touchingBall = true;
+<<<<<<< HEAD
             ball = collider.GetComponent<Ball>();
             Vector3 contactPoint = collision.contacts[0].point;
             Vector3 center = collider.bounds.center;
             touchingBallFromRight = contactPoint.x > center.x;
             touchingBallFromLeft = contactPoint.x < center.x;
         }
+=======
+			ballFollower.forceAmount = ballFollowerForceAmount;
+		}
+>>>>>>> 5a786b3f60097aa52e6287a756e7d350dbd66451
 	}
 
 	void OnCollisionExit2D(Collision2D collision) {
 		if (collision.gameObject.CompareTag("Ball")) {
 			touchingBall = false;
+<<<<<<< HEAD
             touchingBallFromRight = false;
             touchingBallFromLeft = false;
             ball = null;
+=======
+			ballFollower.forceAmount = 0;
+>>>>>>> 5a786b3f60097aa52e6287a756e7d350dbd66451
 		}
 	}
 
