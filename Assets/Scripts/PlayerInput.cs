@@ -48,11 +48,13 @@ public class PlayerInput : MonoBehaviour {
 
 		if (Input.GetButtonDown("SwitchDirection") && touchingBall) {
 			if (controller.collisions.faceDir == 1) {
-				transform.position = ballFollower.rightTeleport.position;
+                FindObjectOfType<FocusCamera>().AddToOffset(transform.position - ballFollower.rightTeleport.position);
+                transform.position = ballFollower.rightTeleport.position;
 			} else {
-				transform.position = ballFollower.leftTeleport.position;
-			}
-		}
+                FindObjectOfType<FocusCamera>().AddToOffset(transform.position - ballFollower.leftTeleport.position);
+                transform.position = ballFollower.leftTeleport.position;
+            }
+        }
 
 		CheckRotation();
 	}
