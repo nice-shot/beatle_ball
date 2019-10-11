@@ -8,6 +8,8 @@ public class PlayerInput : MonoBehaviour {
 	Controller2D controller;
 	SpriteRenderer spriteRenderer;
 
+	BallFollower ballFollower;
+
 	bool touchingBall;
 
 	void Awake () {
@@ -17,15 +19,24 @@ public class PlayerInput : MonoBehaviour {
 		spriteRenderer = GetComponentInChildren<SpriteRenderer>();
 	}
 
+	void Start() {
+		ballFollower = FindObjectOfType<BallFollower>();
+	}
+
 	void Update () {
 		Vector2 directionalInput = new Vector2 (Input.GetAxisRaw ("Horizontal"), Input.GetAxisRaw ("Vertical"));
 		player.SetDirectionalInput (directionalInput);
 
 		if (Input.GetButtonDown("SwitchDirection") && touchingBall) {
-			print("Switching direction");
+			if (controller.collisions.faceDir == 1) {
+				transform.position = ballFollower.rightTeleport.position;
+			} else {
+				transform.position = ballFollower.leftTeleport.position;
+			}
 		}
 
 		CheckRotation();
+
 	}
 
 	void OnCollisionEnter2D(Collision2D collision) {
