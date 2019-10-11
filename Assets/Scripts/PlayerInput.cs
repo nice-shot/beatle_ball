@@ -9,6 +9,7 @@ public class PlayerInput : MonoBehaviour {
 	SpriteRenderer spriteRenderer;
 
 	BallFollower ballFollower;
+	public float ballFollowerForceAmount;
 
 	bool touchingBall;
 
@@ -21,6 +22,7 @@ public class PlayerInput : MonoBehaviour {
 
 	void Start() {
 		ballFollower = FindObjectOfType<BallFollower>();
+		ballFollowerForceAmount = ballFollower.forceAmount;
 	}
 
 	void Update () {
@@ -36,18 +38,27 @@ public class PlayerInput : MonoBehaviour {
 		}
 
 		CheckRotation();
+	}
 
+	void StickToGround() {
+		Transform spriteTrans = spriteRenderer.transform;
+		RaycastHit2D hit = Physics2D.Raycast(transform.position, -spriteTrans.up, Mathf.Infinity, controller.collisionMask);
+		if (hit) {
+			transform.position = Vector2.MoveTowards(transform.position, hit.transform.position, 10	);
+		}
 	}
 
 	void OnCollisionEnter2D(Collision2D collision) {
 		if (collision.gameObject.CompareTag("Ball")) {
 			touchingBall = true;
+			ballFollower.forceAmount = ballFollowerForceAmount;
 		}
 	}
 
 	void OnCollisionExit2D(Collision2D collision) {
 		if (collision.gameObject.CompareTag("Ball")) {
 			touchingBall = false;
+			ballFollower.forceAmount = 0;
 		}
 	}
 
