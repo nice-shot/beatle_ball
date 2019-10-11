@@ -11,27 +11,45 @@ public class Ball : MonoBehaviour
         get { return canPush; }
     }
 
-    public void OnCollisionEnter2D(Collision2D collision)
-    {
+    bool collidingWithItem;
+    bool collidingWithBeetle;
+
+    Rigidbody2D rb;
+
+    void Awake() {
+        rb = GetComponent<Rigidbody2D>();
+    }
+
+    void FixedUpdate() {
+        rb.constraints = RigidbodyConstraints2D.None;
+
+        if (collidingWithItem && collidingWithBeetle) {
+            rb.constraints = RigidbodyConstraints2D.FreezeAll;
+        }
+    }
+
+    public void OnCollisionEnter2D(Collision2D collision) {
         Collider2D col = collision.collider;
-        if (col.CompareTag("Collectable"))
-        {
+        if (col.CompareTag("Collectable")) {
             canPush = false;
-            GetComponent<Rigidbody2D>().velocity = Vector2.zero;
+            collidingWithItem = true;
         }
+
+        if (col.CompareTag("Player")) {
+            collidingWithBeetle = true;
+        }
+
     }
 
-    public void OnCollisionExit2D(Collision2D collision)
-    {
+    public void OnCollisionExit2D(Collision2D collision) {
         Collider2D col = collision.collider;
-        if (col.CompareTag("Collectable"))
-        {
+        if (col.CompareTag("Collectable")) {
             canPush = true;
+            collidingWithItem = false;
         }
-    }
 
-    // Update is called once per frame
-    void Update()
-    {
+        if (col.CompareTag("Player")) {
+            collidingWithBeetle = false;
+        }
     }
 }

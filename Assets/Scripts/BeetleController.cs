@@ -21,6 +21,7 @@ public class BeetleController : MonoBehaviour
         sprite = GetComponentInChildren<SpriteRenderer>();
     }
 
+
     void Update() {
         horizontalInput = Input.GetAxisRaw("Horizontal");
 
@@ -37,13 +38,12 @@ public class BeetleController : MonoBehaviour
                 rb.constraints = RigidbodyConstraints2D.FreezeAll;
             } else {
                 // Get movement direction based on where we're facing
-                Vector2 direction = transform.right * Input.GetAxisRaw("Horizontal");
+                Vector2 direction = transform.right * horizontalInput;
                 // Apply more pressure to stick to the ground
                 direction += (-(Vector2)transform.up * groundPressure);
                 // Set velocity
                 rb.velocity = direction * speed * Time.fixedDeltaTime;
             }
         }
-
     }
 }
