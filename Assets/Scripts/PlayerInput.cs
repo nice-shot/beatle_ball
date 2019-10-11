@@ -4,13 +4,14 @@ using System.Collections;
 [RequireComponent (typeof (Player))]
 public class PlayerInput : MonoBehaviour {
 
-	public float spriteRotationSmooth;
-
 	Player player;
 	Controller2D controller;
 	SpriteRenderer spriteRenderer;
 
-	void Start () {
+	bool touchingBall;
+
+	void Awake () {
+		touchingBall = false;
 		player = GetComponent<Player>();
 		controller = GetComponent<Controller2D>();
 		spriteRenderer = GetComponentInChildren<SpriteRenderer>();
@@ -20,7 +21,23 @@ public class PlayerInput : MonoBehaviour {
 		Vector2 directionalInput = new Vector2 (Input.GetAxisRaw ("Horizontal"), Input.GetAxisRaw ("Vertical"));
 		player.SetDirectionalInput (directionalInput);
 
+		if (Input.GetButtonDown("SwitchDirection") && touchingBall) {
+			print("Switching direction");
+		}
+
 		CheckRotation();
+	}
+
+	void OnCollisionEnter2D(Collision2D collision) {
+		if (collision.gameObject.CompareTag("Ball")) {
+			touchingBall = true;
+		}
+	}
+
+	void OnCollisionExit2D(Collision2D collision) {
+		if (collision.gameObject.CompareTag("Ball")) {
+			touchingBall = false;
+		}
 	}
 
 	void CheckRotation() {
