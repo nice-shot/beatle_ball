@@ -31,11 +31,11 @@ AnimationClip:
       value: {fileID: 21300000, guid: 241664daaad669d42a7ed188caa8a745, type: 3}
     - time: 0.45833334
       value: {fileID: 21300000, guid: 0ca66f3f8f6aded408b729da3ede72bd, type: 3}
-    - time: 0.5416667
+    - time: 0.5
       value: {fileID: 21300000, guid: a6c49e9022c030340ad5fa23b42bf348, type: 3}
-    - time: 0.625
+    - time: 0.5416667
       value: {fileID: 21300000, guid: 9a6910f3fc131a248a639863c755db16, type: 3}
-    - time: 0.7083333
+    - time: 0.5833333
       value: {fileID: 21300000, guid: 3dce842c620d10740be3551e2225acf0, type: 3}
     attribute: m_Sprite
     path: Sprite
@@ -70,7 +70,7 @@ AnimationClip:
     m_AdditiveReferencePoseClip: {fileID: 0}
     m_AdditiveReferencePoseTime: 0
     m_StartTime: 0
-    m_StopTime: 0.75
+    m_StopTime: 0.625
     m_OrientationOffsetY: 0
     m_Level: 0
     m_CycleOffset: 0
@@ -90,7 +90,7 @@ AnimationClip:
   m_HasGenericRootTransform: 0
   m_HasMotionFloatCurves: 0
   m_Events:
-  - time: 0.75
+  - time: 0.5833333
     functionName: MiddleSwitchingDirection
     data: 
     objectReferenceParameter: {fileID: 0}
