@@ -32,12 +32,12 @@ public class PlayerInput : MonoBehaviour {
         {
             if (controller.collisions.faceDir == 1)
             {
-                FindObjectOfType<FocusCamera>().AddToOffset(transform.position - ballFollower.rightTeleport.position);
+                // FindObjectOfType<FocusCamera>().AddToOffset(transform.position - ballFollower.rightTeleport.position);
                 transform.position = ballFollower.rightTeleport.position;
             }
             else
             {
-                FindObjectOfType<FocusCamera>().AddToOffset(transform.position - ballFollower.leftTeleport.position);
+                // FindObjectOfType<FocusCamera>().AddToOffset(transform.position - ballFollower.leftTeleport.position);
                 transform.position = ballFollower.leftTeleport.position;
             }
             touchingBallFromRight = !touchingBallFromRight;
