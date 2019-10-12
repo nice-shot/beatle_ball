@@ -10,15 +10,18 @@ public class FocusCamera : MonoBehaviour {
     public float minZoom;
     public float maxZoom;
     public float zoomLimiter;
+    public float ballScaleZoom;
 
     public float smoothTime;
     public Vector3 offset;
 
     private Vector3 velocity;
     private Camera camera;
+    private Collector collector;
 
     void Awake() {
         camera = GetComponent<Camera>();
+        collector = ball.GetComponent<Collector>();
     }
 
     void LateUpdate() {
@@ -30,7 +33,7 @@ public class FocusCamera : MonoBehaviour {
         transform.position = Vector3.SmoothDamp(transform.position, targetPosition, ref velocity, smoothTime);
 
         // Zoom
-        float newZoom = Mathf.Lerp(minZoom, maxZoom, bounds.size.x / zoomLimiter);
+        float newZoom = Mathf.Lerp(minZoom, maxZoom, (bounds.size.x + (ballScaleZoom * (collector.Size + 1))) / zoomLimiter);
         camera.orthographicSize = Mathf.Lerp(camera.orthographicSize, newZoom, Time.deltaTime);
 
     }

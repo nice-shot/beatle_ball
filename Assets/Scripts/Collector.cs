@@ -6,6 +6,11 @@ using UnityEngine;
 public class Collector : MonoBehaviour
 {
     private int curSize = 0;
+
+    public int Size
+    {
+        get { return curSize; }
+    }
         
     public void OnCollisionEnter2D(Collision2D collision)
     {
@@ -24,6 +29,7 @@ public class Collector : MonoBehaviour
         Destroy(col.gameObject);
         curSize += 1;
         GetComponent<Animator>().SetTrigger("changeSize");
+        //GetComponent<Rigidbody2D>().mass *= 1.5f;
     }
 
     public bool CanCollect(Collider2D col)
