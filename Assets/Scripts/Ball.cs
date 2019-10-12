@@ -46,8 +46,7 @@ public class Ball : MonoBehaviour
     public void Grow(float amount)
     {
         size += 0.5f;
-        transform.localScale = new Vector2(size, size);
-        transform.GetChild(0).GetComponent<PushCollider>().Grow(amount);
+        GetComponent<Animator>().SetTrigger("changeSize");
     }
 
     public void OnCollisionEnter2D(Collision2D collision)
