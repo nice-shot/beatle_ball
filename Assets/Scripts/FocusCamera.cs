@@ -14,6 +14,7 @@ public class FocusCamera : MonoBehaviour {
 
     public float smoothTime;
     public Vector3 offset;
+    public bool start = false;
 
     private Vector3 velocity;
     private Camera camera;
@@ -25,16 +26,19 @@ public class FocusCamera : MonoBehaviour {
     }
 
     void LateUpdate() {
-        Bounds bounds = new Bounds(ball.position, Vector3.zero);
-        bounds.Encapsulate(beetle.position);
+        if (start)
+        {
+            Bounds bounds = new Bounds(ball.position, Vector3.zero);
+            bounds.Encapsulate(beetle.position);
 
-        // Move
-        Vector3 targetPosition = bounds.center + offset;
-        transform.position = Vector3.SmoothDamp(transform.position, targetPosition, ref velocity, smoothTime);
 
-        // Zoom
-        float newZoom = Mathf.Lerp(minZoom, maxZoom, (bounds.size.x + (ballScaleZoom * (collector.Size + 1))) / zoomLimiter);
-        camera.orthographicSize = Mathf.Lerp(camera.orthographicSize, newZoom, Time.deltaTime);
+            // Move
+            Vector3 targetPosition = bounds.center + offset;
+            transform.position = Vector3.SmoothDamp(transform.position, targetPosition, ref velocity, smoothTime);
 
+            // Zoom
+            float newZoom = Mathf.Lerp(minZoom, maxZoom, (bounds.size.x + (ballScaleZoom * (collector.Size + 1))) / zoomLimiter);
+            camera.orthographicSize = Mathf.Lerp(camera.orthographicSize, newZoom, Time.deltaTime);
+        }        
     }
 }
