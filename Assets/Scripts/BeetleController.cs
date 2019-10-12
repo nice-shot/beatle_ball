@@ -10,10 +10,18 @@ public class BeetleController : MonoBehaviour
     public LayerMask groundLayer;
     public Transform groundCheck;
     // This gets changed in the ball OnCollision function
-    public bool touchingBall;
+    private bool _touchingBall;
+    public bool touchingBall {
+        get { return _touchingBall; }
+        set {
+            _touchingBall = value;
+            ac.SetBool("TouchingBall", value);
+        }
+    }
 
 
     Rigidbody2D rb;
+    Animator ac;
     SpriteRenderer sprite;
     BallController ball;
     float horizontalInput;
@@ -21,10 +29,11 @@ public class BeetleController : MonoBehaviour
     bool shouldSwitchDirection;
 
     void Awake() {
-        touchingBall = false;
         shouldSwitchDirection = false;
         rb = GetComponent<Rigidbody2D>();
         sprite = GetComponentInChildren<SpriteRenderer>();
+        ac = GetComponent<Animator>();
+        touchingBall = false;
     }
 
     void Start() {
@@ -37,7 +46,6 @@ public class BeetleController : MonoBehaviour
         if (!Mathf.Approximately(horizontalInput, 0)) {
             sprite.flipX = Mathf.Sign(horizontalInput) == -1;
         }
-
 
         shouldSwitchDirection = Input.GetButtonDown("SwitchDirection") && touchingBall;
     }
@@ -72,9 +80,10 @@ public class BeetleController : MonoBehaviour
             // Prevent sliding down slopes when not moving
             if (Mathf.Approximately(horizontalInput, 0)) {
                 rb.constraints = RigidbodyConstraints2D.FreezeAll;
+                ac.SetBool("Walking", false);
                 // Prevent kicking ball
                 if (touchingBall && transform.position.y <= ball.transform.position.y) {
-                    // TOOD: Make the ball stop
+                // TOOD: Make the ball stop
                 }
             } else {
                 // Get movement direction based on where we're facing
@@ -83,6 +92,7 @@ public class BeetleController : MonoBehaviour
                 direction += (-(Vector2)transform.up * groundPressure);
                 // Set velocity
                 rb.velocity = direction * speed * Time.fixedDeltaTime;
+                ac.SetBool("Walking", true);
             }
         }
 
