@@ -1,38 +1,37 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class FocusCamera : MonoBehaviour
-{
+[RequireComponent(typeof(Camera))]
+public class FocusCamera : MonoBehaviour {
 
-    [SerializeField] float speed = 3;
-    public Transform focus;        //Public variable to store a reference to the player game object
+    public Transform beetle;
+    public Transform ball;
 
+    public float minZoom;
+    public float maxZoom;
+    public float zoomLimiter;
 
-    private Vector3 originalOffset;            //Private variable to store the offset distance between the player and camera
-    private Vector3 offset;            //Private variable to store the offset distance between the player and camera
+    public float smoothTime;
+    public Vector3 offset;
 
-    public void AddToOffset(Vector3 offsetToAdd)
-    {
-        offset += offsetToAdd;
+    private Vector3 velocity;
+    private Camera camera;
+
+    void Awake() {
+        camera = GetComponent<Camera>();
     }
 
-    // Use this for initialization
-    void Start()
-    {
-        //Calculate and store the offset value by getting the distance between the player's position and camera's position.
-        originalOffset = transform.position - focus.position;
-        offset = originalOffset;
-    }
+    void LateUpdate() {
+        Bounds bounds = new Bounds(ball.position, Vector3.zero);
+        bounds.Encapsulate(beetle.position);
 
-    // LateUpdate is called after Update each frame
-    void LateUpdate()
-    {
-        // Set the position of the camera's transform to be the same as the player's, but offset by the calculated offset distance.
-        Vector3 targetPos = new Vector3(focus.position.x, focus.position.y, transform.position.z);
-        transform.position = Vector3.Lerp(transform.position, targetPos, speed);
-        // if (offset != originalOffset)
-        // {
-            // offset = Vector3.MoveTowards(offset, originalOffset, Time.deltaTime * speed);
-        // }
+        // Move
+        Vector3 targetPosition = bounds.center + offset;
+        transform.position = Vector3.SmoothDamp(transform.position, targetPosition, ref velocity, smoothTime);
+
+        // Zoom
+        float newZoom = Mathf.Lerp(minZoom, maxZoom, bounds.size.x / zoomLimiter);
+        camera.orthographicSize = Mathf.Lerp(camera.orthographicSize, newZoom, Time.deltaTime);
+
     }
 }
