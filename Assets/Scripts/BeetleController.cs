@@ -8,24 +8,31 @@ public class BeetleController : MonoBehaviour
     public float groundPressure;
     public LayerMask groundLayer;
     public Transform groundCheck;
+    // This gets changed in the ball OnCollision function
+    public bool touchingBall;
 
-    public bool isGrounded;
 
     Rigidbody2D rb;
     SpriteRenderer sprite;
+    Ball ball;
     float horizontalInput;
-
+    bool isGrounded;
+    bool shouldSwitchDirection;
 
     void Awake() {
+        touchingBall = false;
+        shouldSwitchDirection = false;
         rb = GetComponent<Rigidbody2D>();
         sprite = GetComponentInChildren<SpriteRenderer>();
+        ball = FindObjectOfType<Ball>();
     }
-
 
     void Update() {
         horizontalInput = Input.GetAxisRaw("Horizontal");
-
         sprite.flipX = Mathf.Sign(horizontalInput) == -1;
+
+
+        shouldSwitchDirection = Input.GetButtonDown("SwitchDirection") && touchingBall;
     }
 
     void FixedUpdate() {

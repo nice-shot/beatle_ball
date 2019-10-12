@@ -37,6 +37,8 @@ public class Ball : MonoBehaviour
 
         if (col.CompareTag("Player")) {
             collidingWithBeetle = true;
+            var beetleCtrl = col.GetComponent<BeetleController>();
+            beetleCtrl.touchingBall = true;
         }
 
     }
@@ -50,6 +52,8 @@ public class Ball : MonoBehaviour
 
         if (col.CompareTag("Player")) {
             collidingWithBeetle = false;
+            var beetleCtrl = col.GetComponent<BeetleController>();
+            beetleCtrl.touchingBall = false;
         }
     }
 }
