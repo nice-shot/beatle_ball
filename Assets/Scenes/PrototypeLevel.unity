@@ -131,6 +131,7 @@ GameObject:
   - component: {fileID: 131252633}
   - component: {fileID: 131252632}
   - component: {fileID: 131252631}
+  - component: {fileID: 131252634}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -203,6 +204,23 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &131252634
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 131252630}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b08d2938051bcad418886375c7f4054d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  beetle: {fileID: 2059661263}
+  ball: {fileID: 784097867}
+  minZoom: 0
+  smoothTime: 0.5
+  offset: {x: 0, y: 1.7, z: -10}
 --- !u!1001 &225630290
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -272,6 +290,12 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: b980cf81f80758e4aa1b3d926aeb7e60, type: 3}
+--- !u!4 &784097867 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 7822206791290997942, guid: b980cf81f80758e4aa1b3d926aeb7e60,
+    type: 3}
+  m_PrefabInstance: {fileID: 225630290}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &1531156982
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -2480,3 +2504,9 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 0ca632a41f5c3154eaadd4afa6fbcf38, type: 3}
+--- !u!4 &2059661263 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 3327637612323549962, guid: 0ca632a41f5c3154eaadd4afa6fbcf38,
+    type: 3}
+  m_PrefabInstance: {fileID: 1561456818}
+  m_PrefabAsset: {fileID: 0}
