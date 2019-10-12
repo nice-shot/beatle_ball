@@ -72,6 +72,10 @@ public class BeetleController : MonoBehaviour
             // Prevent sliding down slopes when not moving
             if (Mathf.Approximately(horizontalInput, 0)) {
                 rb.constraints = RigidbodyConstraints2D.FreezeAll;
+                // Prevent kicking ball
+                if (touchingBall && transform.position.y <= ball.transform.position.y) {
+                    // TOOD: Make the ball stop
+                }
             } else {
                 // Get movement direction based on where we're facing
                 Vector2 direction = transform.right * horizontalInput;
@@ -81,5 +85,6 @@ public class BeetleController : MonoBehaviour
                 rb.velocity = direction * speed * Time.fixedDeltaTime;
             }
         }
+
     }
 }

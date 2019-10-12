@@ -7,7 +7,7 @@ public class BallController : MonoBehaviour {
     bool collidingWithItem;
     bool collidingWithBeetle;
 
-    Rigidbody2D rb;
+    public Rigidbody2D rb;
 
     void Awake() {
         rb = GetComponent<Rigidbody2D>();
