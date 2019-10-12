@@ -10,21 +10,42 @@ public class BeetleController : MonoBehaviour
     public LayerMask groundLayer;
     public Transform groundCheck;
     // This gets changed in the ball OnCollision function
-    public bool touchingBall;
+    private bool _touchingBall;
+    public bool touchingBall {
+        get { return _touchingBall; }
+        set {
+            _touchingBall = value;
+            if (value == false) {
+                ac.SetBool("TouchingBall", false);
+                return;
+            }
+
+            // If wer'e facing the ball mark as touching it in animation
+            bool ballOnRight = transform.position.x < ball.transform.position.x;
+            bool facingRight = !sprite.flipX;
+            if (ballOnRight == facingRight) {
+                ac.SetBool("TouchingBall", true);
+            }
+        }
+    }
 
 
     Rigidbody2D rb;
+    Animator ac;
     SpriteRenderer sprite;
     BallController ball;
     float horizontalInput;
     bool isGrounded;
     bool shouldSwitchDirection;
+    bool switchingDirections;
 
     void Awake() {
-        touchingBall = false;
         shouldSwitchDirection = false;
+        switchingDirections = false;
         rb = GetComponent<Rigidbody2D>();
         sprite = GetComponentInChildren<SpriteRenderer>();
+        ac = GetComponent<Animator>();
+        touchingBall = false;
     }
 
     void Start() {
@@ -32,14 +53,51 @@ public class BeetleController : MonoBehaviour
     }
 
     void Update() {
+        // Not moving when switching directions
+        if (switchingDirections) {
+            horizontalInput = 0;
+            shouldSwitchDirection = false;
+            return;
+        }
+
         horizontalInput = Input.GetAxisRaw("Horizontal");
 
         if (!Mathf.Approximately(horizontalInput, 0)) {
             sprite.flipX = Mathf.Sign(horizontalInput) == -1;
         }
 
-
         shouldSwitchDirection = Input.GetButtonDown("SwitchDirection") && touchingBall;
+    }
+
+    void StartSwitchingDirection() {
+        ac.SetTrigger("SwitchBallSide");
+        switchingDirections = true;
+    }
+
+    void MiddleSwitchingDirection() {
+        Vector2 reflection = Vector2.Reflect(ball.transform.position - transform.position, transform.up);
+        Vector2 targetPosition = (Vector2)ball.transform.position + reflection;
+
+        RaycastHit2D hitBelow = Physics2D.Raycast(targetPosition, -transform.up, Mathf.Infinity, groundLayer);
+        if (hitBelow) {
+            rb.position = targetPosition;
+            sprite.flipX = !sprite.flipX;
+        } else {
+            RaycastHit2D hitAbove = Physics2D.Raycast(targetPosition, transform.up, Mathf.Infinity, groundLayer);
+            if (!hitAbove) {
+                Debug.LogError("Can't teleport - not hitting anywhere!");
+            } else {
+                targetPosition = hitAbove.point + hitAbove.normal * (-characterSize / 2);
+                rb.position = targetPosition;
+                sprite.flipX = !sprite.flipX;
+            }
+        }
+
+        return;
+    }
+
+    void StopSwitchingDirection() {
+        switchingDirections = false;
     }
 
     void FixedUpdate() {
@@ -48,33 +106,16 @@ public class BeetleController : MonoBehaviour
 
         if (isGrounded) {
             if (shouldSwitchDirection) {
-                Vector2 reflection = Vector2.Reflect(ball.transform.position - transform.position, transform.up);
-                Vector2 targetPosition = (Vector2)ball.transform.position + reflection;
-
-                RaycastHit2D hitBelow = Physics2D.Raycast(targetPosition, -transform.up, Mathf.Infinity, groundLayer);
-                if (hitBelow) {
-                    rb.position = targetPosition;
-                    sprite.flipX = !sprite.flipX;
-                } else {
-                    RaycastHit2D hitAbove = Physics2D.Raycast(targetPosition, transform.up, Mathf.Infinity, groundLayer);
-                    if (!hitAbove) {
-                        Debug.LogError("Can't teleport - not hitting anywhere!");
-                    } else {
-                        targetPosition = hitAbove.point + hitAbove.normal * (-characterSize / 2);
-                        rb.position = targetPosition;
-                        sprite.flipX = !sprite.flipX;
-                    }
-                }
-
-                return;
+                StartSwitchingDirection();
             }
 
             // Prevent sliding down slopes when not moving
             if (Mathf.Approximately(horizontalInput, 0)) {
                 rb.constraints = RigidbodyConstraints2D.FreezeAll;
+                ac.SetBool("Walking", false);
                 // Prevent kicking ball
                 if (touchingBall && transform.position.y <= ball.transform.position.y) {
-                    // TOOD: Make the ball stop
+                // TOOD: Make the ball stop
                 }
             } else {
                 // Get movement direction based on where we're facing
@@ -83,8 +124,8 @@ public class BeetleController : MonoBehaviour
                 direction += (-(Vector2)transform.up * groundPressure);
                 // Set velocity
                 rb.velocity = direction * speed * Time.fixedDeltaTime;
+                ac.SetBool("Walking", true);
             }
         }
-
     }
 }
