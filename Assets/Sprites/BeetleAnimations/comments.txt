@@ -1,0 +1,4 @@
+24fps
+beatle-start-push - last frame held for 3 frames
+beatle-stop-push - last frame held for 2 frames
+beatle-exit-ball - last from held for 3 frames
