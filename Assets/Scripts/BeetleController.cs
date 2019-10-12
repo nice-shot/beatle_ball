@@ -15,7 +15,17 @@ public class BeetleController : MonoBehaviour
         get { return _touchingBall; }
         set {
             _touchingBall = value;
-            ac.SetBool("TouchingBall", value);
+            if (value == false) {
+                ac.SetBool("TouchingBall", false);
+                return;
+            }
+
+            // If wer'e facing the ball mark as touching it in animation
+            bool ballOnRight = transform.position.x < ball.transform.position.x;
+            bool facingRight = !sprite.flipX;
+            if (ballOnRight == facingRight) {
+                ac.SetBool("TouchingBall", true);
+            }
         }
     }
 
@@ -95,6 +105,5 @@ public class BeetleController : MonoBehaviour
                 ac.SetBool("Walking", true);
             }
         }
-
     }
 }
