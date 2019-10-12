@@ -47,7 +47,7 @@ public class Ball : MonoBehaviour
     {
         size += 0.5f;
         transform.localScale = new Vector2(size, size);
-        transform.GetChild(0).GetComponent<PushCollider>().Grow(amount);
+        // transform.GetChild(0).GetComponent<PushCollider>().Grow(amount);
     }
 
     public void OnCollisionEnter2D(Collision2D collision)
@@ -59,13 +59,12 @@ public class Ball : MonoBehaviour
             canPush = false;
             rb.velocity = Vector2.zero;
         }
+
     }
 
-    public void OnCollisionExit2D(Collision2D collision)
-    {
+    public void OnCollisionExit2D(Collision2D collision) {
         Collider2D col = collision.collider;
-        if (col.CompareTag("Collectable"))
-        {
+        if (col.CompareTag("Collectable")) {
             canPush = true;
         }
     }
