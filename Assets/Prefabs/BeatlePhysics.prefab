@@ -126,6 +126,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   speed: 300
   groundPressure: 0.4
+  characterSize: 1
   groundLayer:
     serializedVersion: 2
     m_Bits: 512

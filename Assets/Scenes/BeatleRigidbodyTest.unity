@@ -655,6 +655,10 @@ PrefabInstance:
       propertyPath: point3
       value: 
       objectReference: {fileID: 0}
+    - target: {fileID: 269240668, guid: 0ca632a41f5c3154eaadd4afa6fbcf38, type: 3}
+      propertyPath: characterSize
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 0ca632a41f5c3154eaadd4afa6fbcf38, type: 3}
 --- !u!1001 &8621381118869903919

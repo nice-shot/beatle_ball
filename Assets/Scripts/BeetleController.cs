@@ -6,6 +6,7 @@ public class BeetleController : MonoBehaviour
 {
     public float speed;
     public float groundPressure;
+    public float characterSize;
     public LayerMask groundLayer;
     public Transform groundCheck;
     // This gets changed in the ball OnCollision function
@@ -47,10 +48,23 @@ public class BeetleController : MonoBehaviour
 
         if (isGrounded) {
             if (shouldSwitchDirection) {
-                Vector2 targetPosition = Vector2.Reflect(ball.transform.position - transform.position, transform.up);
-                rb.position = (Vector2)ball.transform.position + targetPosition;
+                Vector2 reflection = Vector2.Reflect(ball.transform.position - transform.position, transform.up);
+                Vector2 targetPosition = (Vector2)ball.transform.position + reflection;
 
-                // TODO: Fix instances where falling through the ground
+                RaycastHit2D hitBelow = Physics2D.Raycast(targetPosition, -transform.up, Mathf.Infinity, groundLayer);
+                if (hitBelow) {
+                    rb.position = targetPosition;
+                    sprite.flipX = !sprite.flipX;
+                } else {
+                    RaycastHit2D hitAbove = Physics2D.Raycast(targetPosition, transform.up, Mathf.Infinity, groundLayer);
+                    if (!hitAbove) {
+                        Debug.LogError("Can't teleport - not hitting anywhere!");
+                    } else {
+                        targetPosition = hitAbove.point + hitAbove.normal * (-characterSize / 2);
+                        rb.position = targetPosition;
+                        sprite.flipX = !sprite.flipX;
+                    }
+                }
 
                 return;
             }
