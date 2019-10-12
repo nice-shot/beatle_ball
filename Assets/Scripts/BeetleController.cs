@@ -37,9 +37,11 @@ public class BeetleController : MonoBehaviour
     float horizontalInput;
     bool isGrounded;
     bool shouldSwitchDirection;
+    bool switchingDirections;
 
     void Awake() {
         shouldSwitchDirection = false;
+        switchingDirections = false;
         rb = GetComponent<Rigidbody2D>();
         sprite = GetComponentInChildren<SpriteRenderer>();
         ac = GetComponent<Animator>();
@@ -51,6 +53,13 @@ public class BeetleController : MonoBehaviour
     }
 
     void Update() {
+        // Not moving when switching directions
+        if (switchingDirections) {
+            horizontalInput = 0;
+            shouldSwitchDirection = false;
+            return;
+        }
+
         horizontalInput = Input.GetAxisRaw("Horizontal");
 
         if (!Mathf.Approximately(horizontalInput, 0)) {
@@ -60,31 +69,44 @@ public class BeetleController : MonoBehaviour
         shouldSwitchDirection = Input.GetButtonDown("SwitchDirection") && touchingBall;
     }
 
+    void StartSwitchingDirection() {
+        ac.SetTrigger("SwitchBallSide");
+        switchingDirections = true;
+    }
+
+    void MiddleSwitchingDirection() {
+        Vector2 reflection = Vector2.Reflect(ball.transform.position - transform.position, transform.up);
+        Vector2 targetPosition = (Vector2)ball.transform.position + reflection;
+
+        RaycastHit2D hitBelow = Physics2D.Raycast(targetPosition, -transform.up, Mathf.Infinity, groundLayer);
+        if (hitBelow) {
+            rb.position = targetPosition;
+            sprite.flipX = !sprite.flipX;
+        } else {
+            RaycastHit2D hitAbove = Physics2D.Raycast(targetPosition, transform.up, Mathf.Infinity, groundLayer);
+            if (!hitAbove) {
+                Debug.LogError("Can't teleport - not hitting anywhere!");
+            } else {
+                targetPosition = hitAbove.point + hitAbove.normal * (-characterSize / 2);
+                rb.position = targetPosition;
+                sprite.flipX = !sprite.flipX;
+            }
+        }
+
+        return;
+    }
+
+    void StopSwitchingDirection() {
+        switchingDirections = false;
+    }
+
     void FixedUpdate() {
         isGrounded = Physics2D.OverlapCircle(groundCheck.position, 0.15f, groundLayer);
         rb.constraints = RigidbodyConstraints2D.None;
 
         if (isGrounded) {
             if (shouldSwitchDirection) {
-                Vector2 reflection = Vector2.Reflect(ball.transform.position - transform.position, transform.up);
-                Vector2 targetPosition = (Vector2)ball.transform.position + reflection;
-
-                RaycastHit2D hitBelow = Physics2D.Raycast(targetPosition, -transform.up, Mathf.Infinity, groundLayer);
-                if (hitBelow) {
-                    rb.position = targetPosition;
-                    sprite.flipX = !sprite.flipX;
-                } else {
-                    RaycastHit2D hitAbove = Physics2D.Raycast(targetPosition, transform.up, Mathf.Infinity, groundLayer);
-                    if (!hitAbove) {
-                        Debug.LogError("Can't teleport - not hitting anywhere!");
-                    } else {
-                        targetPosition = hitAbove.point + hitAbove.normal * (-characterSize / 2);
-                        rb.position = targetPosition;
-                        sprite.flipX = !sprite.flipX;
-                    }
-                }
-
-                return;
+                StartSwitchingDirection();
             }
 
             // Prevent sliding down slopes when not moving
