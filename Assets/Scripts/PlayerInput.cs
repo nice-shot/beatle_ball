@@ -82,7 +82,7 @@ public class PlayerInput : MonoBehaviour {
         if (collider.gameObject.CompareTag("Ball"))
         {
             touchingBall = true;
-            // ball = collider.GetComponent<PushCollider>().GetBall;
+            ball = collider.GetComponent<PushCollider>().GetBall;
             Vector3 center = collider.bounds.center;
             touchingBallFromRight = transform.position.x > center.x;
             touchingBallFromLeft = transform.position.x < center.x;

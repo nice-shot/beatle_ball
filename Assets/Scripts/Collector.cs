@@ -22,7 +22,6 @@ public class Collector : MonoBehaviour
     {
         Destroy(col.gameObject);
         GetComponent<Ball>().Grow(0.5f);
-        
     }
 
     public bool CanCollect(Collider2D col)
