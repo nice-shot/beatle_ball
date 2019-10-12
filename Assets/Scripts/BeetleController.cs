@@ -14,7 +14,7 @@ public class BeetleController : MonoBehaviour
 
     Rigidbody2D rb;
     SpriteRenderer sprite;
-    Ball ball;
+    BallController ball;
     float horizontalInput;
     bool isGrounded;
     bool shouldSwitchDirection;
@@ -24,12 +24,18 @@ public class BeetleController : MonoBehaviour
         shouldSwitchDirection = false;
         rb = GetComponent<Rigidbody2D>();
         sprite = GetComponentInChildren<SpriteRenderer>();
-        ball = FindObjectOfType<Ball>();
+    }
+
+    void Start() {
+        ball = FindObjectOfType<BallController>();
     }
 
     void Update() {
         horizontalInput = Input.GetAxisRaw("Horizontal");
-        sprite.flipX = Mathf.Sign(horizontalInput) == -1;
+
+        if (!Mathf.Approximately(horizontalInput, 0)) {
+            sprite.flipX = Mathf.Sign(horizontalInput) == -1;
+        }
 
 
         shouldSwitchDirection = Input.GetButtonDown("SwitchDirection") && touchingBall;
@@ -40,6 +46,15 @@ public class BeetleController : MonoBehaviour
         rb.constraints = RigidbodyConstraints2D.None;
 
         if (isGrounded) {
+            if (shouldSwitchDirection) {
+                Vector2 targetPosition = Vector2.Reflect(ball.transform.position - transform.position, transform.up);
+                rb.position = (Vector2)ball.transform.position + targetPosition;
+
+                // TODO: Fix instances where falling through the ground
+
+                return;
+            }
+
             // Prevent sliding down slopes when not moving
             if (Mathf.Approximately(horizontalInput, 0)) {
                 rb.constraints = RigidbodyConstraints2D.FreezeAll;
