@@ -54,6 +54,14 @@ public class HoleController : MonoBehaviour
             print("Ball entered collision...");
             var sprite = col.GetComponentInChildren<SpriteRenderer>();
             sprite.sortingOrder = 1;
+            StartCoroutine("Win");
+            
         }
+    }
+
+    public IEnumerator Win()
+    {
+        yield return new WaitForSeconds(2);
+        FindObjectOfType<LevelManager>().Win();
     }
 }
