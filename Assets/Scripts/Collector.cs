@@ -7,11 +7,17 @@ public class Collector : MonoBehaviour
 {
     private int curSize = 0;
 
+    private Animator ac;
+
+    void Awake() {
+        ac = GetComponent<Animator>();
+    }
+
     public int Size
     {
         get { return curSize; }
     }
-        
+
     public void OnCollisionEnter2D(Collision2D collision)
     {
         Collider2D col = collision.collider;
@@ -28,7 +34,7 @@ public class Collector : MonoBehaviour
     {
         Destroy(col.gameObject);
         curSize += 1;
-        GetComponent<Animator>().SetTrigger("changeSize");
+        ac.SetTrigger("changeSize");
         //GetComponent<Rigidbody2D>().mass *= 1.5f;
     }
 
