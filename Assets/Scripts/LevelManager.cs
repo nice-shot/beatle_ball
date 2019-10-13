@@ -1,6 +1,8 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
+
 
 public class LevelManager : MonoBehaviour
 {
@@ -20,6 +22,10 @@ public class LevelManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if (Input.GetKeyDown(KeyCode.Escape))
+        {
+            Application.Quit();
+        }
         if (!start)
         {
             if (Input.GetKey(KeyCode.Space))
@@ -69,5 +75,17 @@ public class LevelManager : MonoBehaviour
     public void ShowInstructionalSpace()
     {
         instructionalSpace = true;
+    }
+
+    public void Win()
+    {
+        panel.transform.GetChild(8).gameObject.SetActive(true);
+        StartCoroutine("MoveToCredits");
+    }
+
+    public IEnumerator MoveToCredits()
+    {
+        yield return new WaitForSeconds(3);
+        SceneManager.LoadScene("Credits");
     }
 }
