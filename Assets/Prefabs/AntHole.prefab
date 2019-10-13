@@ -259,6 +259,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   collector: {fileID: 0}
   beetle: {fileID: 0}
+  ballGrabCollider: {fileID: 121633480751815963}
+  ballSpriteLayerTriggerCollider: {fileID: 121633480751815961}
 --- !u!61 &121633480751815961
 BoxCollider2D:
   m_ObjectHideFlags: 0
