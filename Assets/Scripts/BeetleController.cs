@@ -38,6 +38,8 @@ public class BeetleController : MonoBehaviour
     float horizontalInput;
     bool isGrounded;
     bool shouldSwitchDirection;
+    // Hides the beatle and prevents movements
+    bool started;
 
     void Awake() {
         shouldSwitchDirection = false;
@@ -46,6 +48,17 @@ public class BeetleController : MonoBehaviour
         sprite = GetComponentInChildren<SpriteRenderer>();
         ac = GetComponent<Animator>();
         touchingBall = false;
+        Hide();
+    }
+
+    public void Hide() {
+        started = false;
+        sprite.enabled = false;
+    }
+
+    public void Show() {
+        started = true;
+        sprite.enabled = true;
     }
 
     void Start() {
@@ -53,6 +66,10 @@ public class BeetleController : MonoBehaviour
     }
 
     void Update() {
+        // Wait until the beetle is shown
+        if (!started) {
+            return;
+        }
         // Not moving when switching directions
         if (switchingDirectionState != SwitchingDirectionState.Stop) {
             horizontalInput = 0;
@@ -75,6 +92,9 @@ public class BeetleController : MonoBehaviour
     }
 
     void MiddleSwitchingDirection() {
+        if (!started) {
+            return;
+        }
         switchingDirectionState = SwitchingDirectionState.Middle;
         Vector2 reflection = Vector2.Reflect(ball.transform.position - transform.position, transform.up);
         Vector2 targetPosition = (Vector2)ball.transform.position + reflection;

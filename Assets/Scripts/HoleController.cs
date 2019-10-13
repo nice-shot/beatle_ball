@@ -4,21 +4,36 @@ using UnityEngine;
 
 public class HoleController : MonoBehaviour
 {
-    [SerializeField] Collector collector;
-    
-    void Start()
-    {
-        GetComponent<Collider2D>().enabled = false;
-        GetComponent<BoxCollider2D>().enabled = false;
+    public Collector collector;
+    public BeetleController beetle;
+
+    private Collider2D[] colliders;
+    private Animator ac;
+
+    void Awake() {
+        ac = GetComponent<Animator>();
+        colliders = GetComponents<Collider2D>();
+        foreach (Collider2D collider in colliders) {
+            collider.enabled = false;
+        }
     }
-    // Update is called once per frame
+
     void Update()
     {
-        if (collector.Size == 8)
-        {
-            GetComponent<PolygonCollider2D>().enabled = true;
-            GetComponent<BoxCollider2D>().enabled = true;
+        if (collector && collector.Size == 8) {
+            foreach (Collider2D collider in colliders) {
+                collider.enabled = true;
+            }
         }
+    }
+
+    void ShowRealBeetle() {
+        beetle.Show();
+        ac.SetTrigger("ShowAnt");
+    }
+
+    public void ThrowBeetle() {
+        ac.SetTrigger("ThrowBeetle");
     }
 
     void OnTriggerEnter2D(Collider2D col)
