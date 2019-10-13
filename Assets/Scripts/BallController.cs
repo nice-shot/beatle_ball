@@ -6,6 +6,7 @@ using UnityEngine;
 public class BallController : MonoBehaviour {
     bool collidingWithItem;
     bool collidingWithBeetle;
+    bool instructionalSpace = false;
 
     public Rigidbody2D rb;
     BeetleController beetle;
@@ -19,6 +20,11 @@ public class BallController : MonoBehaviour {
         rb.constraints = RigidbodyConstraints2D.None;
 
         if (collidingWithItem && collidingWithBeetle) {
+            if (!instructionalSpace)
+            {
+                FindObjectOfType<LevelManager>().ShowInstructionalSpace();
+                instructionalSpace = true;
+            }
             rb.constraints = RigidbodyConstraints2D.FreezeAll;
         }
 
