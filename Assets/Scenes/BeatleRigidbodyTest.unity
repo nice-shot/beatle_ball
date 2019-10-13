@@ -2658,6 +2658,30 @@ PrefabInstance:
       propertyPath: beetle
       value: 
       objectReference: {fileID: 1687902614}
+    - target: {fileID: 674008201, guid: 9a1809a07003d524e8d7804efbb20ee6, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 1.45
+      objectReference: {fileID: 0}
+    - target: {fileID: 674008201, guid: 9a1809a07003d524e8d7804efbb20ee6, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 1.005
+      objectReference: {fileID: 0}
+    - target: {fileID: 674008201, guid: 9a1809a07003d524e8d7804efbb20ee6, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 674008201, guid: 9a1809a07003d524e8d7804efbb20ee6, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 674008201, guid: 9a1809a07003d524e8d7804efbb20ee6, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 674008202, guid: 9a1809a07003d524e8d7804efbb20ee6, type: 3}
+      propertyPath: m_WasSpriteAssigned
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 9a1809a07003d524e8d7804efbb20ee6, type: 3}
 --- !u!1001 &2016937897756732815

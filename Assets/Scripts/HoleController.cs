@@ -29,7 +29,7 @@ public class HoleController : MonoBehaviour
 
     void ShowRealBeetle() {
         beetle.Show();
-        ac.SetTrigger("ShowAnt");
+        // ac.SetTrigger("ShowAnt");
     }
 
     public void ThrowBeetle() {
