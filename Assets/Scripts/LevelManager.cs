@@ -4,7 +4,9 @@ using UnityEngine;
 
 public class LevelManager : MonoBehaviour
 {
-    [SerializeField] Canvas panel;
+    public Canvas panel;
+    public HoleController hole;
+
     private bool start = false;
     private bool instructionalArrows = false;
     private bool instructionalArrowsCoroutine = false;
@@ -26,6 +28,7 @@ public class LevelManager : MonoBehaviour
                 start = true;
                 Camera.main.GetComponent<FocusCamera>().start = true;
                 panel.GetComponent<Animator>().SetTrigger("start");
+                hole.ThrowBeetle();
             }
         }
         else if (!instructionalSpace)

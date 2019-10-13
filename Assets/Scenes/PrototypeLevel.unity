@@ -359,6 +359,14 @@ PrefabInstance:
       propertyPath: collector
       value: 
       objectReference: {fileID: 1967196869}
+    - target: {fileID: 674008202, guid: 9a1809a07003d524e8d7804efbb20ee6, type: 3}
+      propertyPath: m_WasSpriteAssigned
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1016239935, guid: 9a1809a07003d524e8d7804efbb20ee6, type: 3}
+      propertyPath: m_WasSpriteAssigned
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 9a1809a07003d524e8d7804efbb20ee6, type: 3}
 --- !u!1 &729312493
@@ -534,12 +542,12 @@ PrefabInstance:
     - target: {fileID: 3327637612323549962, guid: 0ca632a41f5c3154eaadd4afa6fbcf38,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: -0.86
+      value: -0.95
       objectReference: {fileID: 0}
     - target: {fileID: 3327637612323549962, guid: 0ca632a41f5c3154eaadd4afa6fbcf38,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: -4.55
+      value: -4.59
       objectReference: {fileID: 0}
     - target: {fileID: 3327637612323549962, guid: 0ca632a41f5c3154eaadd4afa6fbcf38,
         type: 3}
@@ -674,6 +682,18 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 987044621}
   m_CullTransparentMesh: 0
+--- !u!114 &1032309261 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 121633480751815962, guid: 9a1809a07003d524e8d7804efbb20ee6,
+    type: 3}
+  m_PrefabInstance: {fileID: 341259222}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 114971142e4a68f4085268ddb85858b1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1090881484
 GameObject:
   m_ObjectHideFlags: 0
@@ -704,6 +724,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   panel: {fileID: 1709272879}
+  hole: {fileID: 1032309261}
 --- !u!4 &1090881486
 Transform:
   m_ObjectHideFlags: 0
