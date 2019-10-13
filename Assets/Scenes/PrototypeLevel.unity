@@ -351,22 +351,14 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 121633480751815962, guid: 9a1809a07003d524e8d7804efbb20ee6,
         type: 3}
-      propertyPath: beetle
-      value: 
-      objectReference: {fileID: 1329800255}
-    - target: {fileID: 121633480751815962, guid: 9a1809a07003d524e8d7804efbb20ee6,
-        type: 3}
       propertyPath: collector
       value: 
       objectReference: {fileID: 1967196869}
-    - target: {fileID: 674008202, guid: 9a1809a07003d524e8d7804efbb20ee6, type: 3}
-      propertyPath: m_WasSpriteAssigned
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1016239935, guid: 9a1809a07003d524e8d7804efbb20ee6, type: 3}
-      propertyPath: m_WasSpriteAssigned
-      value: 0
-      objectReference: {fileID: 0}
+    - target: {fileID: 121633480751815962, guid: 9a1809a07003d524e8d7804efbb20ee6,
+        type: 3}
+      propertyPath: beetle
+      value: 
+      objectReference: {fileID: 1329800255}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 9a1809a07003d524e8d7804efbb20ee6, type: 3}
 --- !u!1 &729312493
