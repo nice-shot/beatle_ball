@@ -7,6 +7,8 @@ public class BeetleController : MonoBehaviour
     public float speed;
     public float groundPressure;
     public float characterSize;
+    public float lastTimeOnGround;
+    public GameObject beetle;
     public LayerMask groundLayer;
     public Transform groundCheck;
     // This gets changed in the ball OnCollision function
@@ -126,6 +128,7 @@ public class BeetleController : MonoBehaviour
         rb.constraints = RigidbodyConstraints2D.None;
 
         if (isGrounded) {
+            lastTimeOnGround = Time.time;
             if (shouldSwitchDirection) {
                 StartSwitchingDirection();
             }
@@ -146,6 +149,17 @@ public class BeetleController : MonoBehaviour
                 // Set velocity
                 rb.velocity = direction * speed * Time.fixedDeltaTime;
                 ac.SetBool("Walking", true);
+            }
+        }
+
+        if (!isGrounded)
+        {
+            float timeUngrounded = Time.time - lastTimeOnGround;
+            if (timeUngrounded > 0.5)
+            {
+                transform.rotation = Quaternion.identity;
+                transform.position += Vector3.up * 0.2f;
+                lastTimeOnGround = Time.time;
             }
         }
     }
