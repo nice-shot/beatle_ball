@@ -8,15 +8,22 @@ public class BallController : MonoBehaviour {
     bool collidingWithBeetle;
 
     public Rigidbody2D rb;
+    BeetleController beetle;
 
     void Awake() {
         rb = GetComponent<Rigidbody2D>();
+        beetle = FindObjectOfType<BeetleController>();
     }
 
     void FixedUpdate() {
         rb.constraints = RigidbodyConstraints2D.None;
 
         if (collidingWithItem && collidingWithBeetle) {
+            rb.constraints = RigidbodyConstraints2D.FreezeAll;
+        }
+
+        if (beetle.switchingDirectionState == BeetleController.SwitchingDirectionState.Start) {
+            // Stop the ball during switching animation
             rb.constraints = RigidbodyConstraints2D.FreezeAll;
         }
     }

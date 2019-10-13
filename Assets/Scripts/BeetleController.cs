@@ -28,7 +28,8 @@ public class BeetleController : MonoBehaviour
             }
         }
     }
-
+    public enum SwitchingDirectionState {Start, Middle, Stop};
+    public SwitchingDirectionState switchingDirectionState;
 
     Rigidbody2D rb;
     Animator ac;
@@ -37,11 +38,10 @@ public class BeetleController : MonoBehaviour
     float horizontalInput;
     bool isGrounded;
     bool shouldSwitchDirection;
-    bool switchingDirections;
 
     void Awake() {
         shouldSwitchDirection = false;
-        switchingDirections = false;
+        switchingDirectionState = SwitchingDirectionState.Stop;
         rb = GetComponent<Rigidbody2D>();
         sprite = GetComponentInChildren<SpriteRenderer>();
         ac = GetComponent<Animator>();
@@ -54,7 +54,7 @@ public class BeetleController : MonoBehaviour
 
     void Update() {
         // Not moving when switching directions
-        if (switchingDirections) {
+        if (switchingDirectionState != SwitchingDirectionState.Stop) {
             horizontalInput = 0;
             shouldSwitchDirection = false;
             return;
@@ -71,10 +71,11 @@ public class BeetleController : MonoBehaviour
 
     void StartSwitchingDirection() {
         ac.SetTrigger("SwitchBallSide");
-        switchingDirections = true;
+        switchingDirectionState = SwitchingDirectionState.Start;
     }
 
     void MiddleSwitchingDirection() {
+        switchingDirectionState = SwitchingDirectionState.Middle;
         Vector2 reflection = Vector2.Reflect(ball.transform.position - transform.position, transform.up);
         Vector2 targetPosition = (Vector2)ball.transform.position + reflection;
 
@@ -97,7 +98,7 @@ public class BeetleController : MonoBehaviour
     }
 
     void StopSwitchingDirection() {
-        switchingDirections = false;
+        switchingDirectionState = SwitchingDirectionState.Stop;
     }
 
     void FixedUpdate() {
