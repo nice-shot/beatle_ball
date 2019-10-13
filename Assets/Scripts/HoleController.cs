@@ -7,39 +7,51 @@ public class HoleController : MonoBehaviour
     public Collector collector;
     public BeetleController beetle;
 
-    private Collider2D[] colliders;
+    public Collider2D ballGrabCollider;
+    public Collider2D ballSpriteLayerTriggerCollider;
+
+    private bool antInHole;
     private Animator ac;
 
     void Awake() {
         ac = GetComponent<Animator>();
-        colliders = GetComponents<Collider2D>();
-        foreach (Collider2D collider in colliders) {
-            collider.enabled = false;
-        }
+        ballGrabCollider.enabled = false;
+        ballSpriteLayerTriggerCollider.enabled = false;
     }
 
     void Update()
     {
         if (collector && collector.Size == 8) {
-            foreach (Collider2D collider in colliders) {
-                collider.enabled = true;
-            }
+
+            ballGrabCollider.enabled = true;
+            ballSpriteLayerTriggerCollider.enabled = true;
         }
     }
 
     void ShowRealBeetle() {
         beetle.Show();
-        ac.SetTrigger("ShowAnt");
+        // ac.SetTrigger("ShowAnt");
+    }
+
+    void SetAntInHole() {
+        antInHole = true;
     }
 
     public void ThrowBeetle() {
         ac.SetTrigger("ThrowBeetle");
     }
 
-    void OnTriggerEnter2D(Collider2D col)
-    {
-        if (col.CompareTag("Ball"))
-        {
+    public void ShowAnt(bool onRight) {
+        ac.SetBool("BeetleOnRight", onRight);
+        if (antInHole) {
+            ac.SetTrigger("ShowAnt");
+            antInHole = false;
+        }
+    }
+
+    void OnTriggerEnter2D(Collider2D col) {
+        if (col == col.CompareTag("Ball")) {
+            print("Ball entered collision...");
             var sprite = col.GetComponentInChildren<SpriteRenderer>();
             sprite.sortingOrder = 1;
             StartCoroutine("Win");
