@@ -65,7 +65,7 @@ public class LevelManager : MonoBehaviour
 
     public IEnumerator ShowInstructionalArrows()
     {
-        yield return new WaitForSeconds(2);
+        yield return new WaitForSeconds(5.5f);
         panel.transform.GetChild(5).gameObject.SetActive(true);
         panel.transform.GetChild(6).gameObject.SetActive(true);
         panel.GetComponent<Animator>().SetTrigger("instructionalArrows");
